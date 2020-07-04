@@ -1,0 +1,331 @@
+/*
+ * jyingoXT, PHP Ajax Toolkit http://www.jyingo.com
+ * Copyright 2011-2020 Andrea Pezzino (haxormail@gmail.com) 
+ * 
+ * WARNING: jyingoXT is not a free source code. You are allowed to use
+ * this source code only under the following terms:
+ *
+ * 1) You must give appropriate credit, provide a link to the license, and
+ * indicate if changes were made. You may do so in any reasonable manner,
+ * but not in any way that suggests the licensor endorses you or your use.
+ * 2) You may not use the material for commercial purposes.
+ * 3) If you remix, transform, or build upon the material, you may
+ *   not distribute the modified material.
+ * 
+ * Please refer to license.txt
+ *  
+ */ 
+
+/* gray */
+div.jyingo_dropdown_menu_gray div.jyingo_dropdown_menu_item { 
+ padding:0px 5px;
+ margin:3px 0px;
+ font-size:11px;
+ color:#4c4c4c;
+ cursor:pointer;
+ border-bottom:1px solid #fff;
+ border-top:1px solid #fff;
+ padding-right:16px;
+}
+
+div.jyingo_dropdown_menu_gray div.jyingo_dropdown_menu_item_first {
+
+}
+
+div.jyingo_dropdown_menu_gray div.jyingo_dropdown_menu_item:hover {
+	background:#4c4c4c;
+	color:#fff;
+	border-color:#272727;
+}
+
+div.jyingo_dropdown_menu_gray div.jyingo_dropdown_menu_item_separator {
+  height: 1px;
+  background: #888;
+  margin:0px 1px;
+  
+}
+
+div.jyingo_dropdown_menu_gray div.jyingo_dropdown_menu_item span { display:inline-block; vertical-align:middle; }
+div.jyingo_dropdown_menu_gray div.jyingo_dropdown_menu_item div.icon { background-position:left center; vertical-align:middle; height:16px; display:inline-block; width:20px; margin:2px; background-repeat:no-repeat;}
+ 
+div.jyingo_dropdown_menu_gray { 
+	
+	
+	background: #fff;
+	display:none; 
+	margin-top: -1px;
+	
+	position:absolute;
+	z-index: 700000;
+	border:1px solid #999;
+	box-shadow:         0px 1px 2px rgba(50, 50, 50, 0.25);
+	
+
+	border-radius: 3px;
+	border-top-left-radius: 0px;
+}
+/* --- */
+
+/* white */
+div.jyingo_dropdown_menu_white div.jyingo_dropdown_menu_item { 
+ padding:0px 5px;
+ margin:3px 0px;
+ font-size:11px;
+ color:#4c4c4c;
+ cursor:pointer;
+ border-top:1px solid #fff;
+ 
+ border-bottom:1px solid #fff;
+ padding-right:16px;
+}
+
+div.jyingo_dropdown_menu_white div.jyingo_dropdown_menu_item_first {
+
+}
+
+div.jyingo_dropdown_menu_white div.jyingo_dropdown_menu_item:hover {
+	background:#4c4c4c;
+	color:#fff;
+	border-color:#272727;
+}
+
+div.jyingo_dropdown_menu_white div.jyingo_dropdown_menu_item_separator {
+  height: 1px;
+  background: #888;
+  margin:0px 1px;
+  
+}
+
+div.jyingo_dropdown_menu_white div.jyingo_dropdown_menu_item span { display:inline-block; vertical-align:middle; }
+div.jyingo_dropdown_menu_white div.jyingo_dropdown_menu_item div.icon { background-position:left center; vertical-align:middle; height:16px; display:inline-block; width:20px; margin:2px; background-repeat:no-repeat;}
+ 
+div.jyingo_dropdown_menu_white { 
+	
+	margin-top: 1px;
+	background: #fff;
+	display:none; 
+	position:absolute;
+	z-index: 700000;
+	border:1px solid #4c4c4c;
+
+  border-top:0;
+	box-shadow:         0px 1px 2px rgba(50, 50, 50, 0.25);
+}
+/* --- */
+
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item { 
+ padding:3px 5px;
+ color:#444;
+ border-top:1px solid transparent;
+ border-bottom:1px solid transparent;
+ cursor:pointer;
+ padding-right:16px;
+ margin:2px 0px;
+ 
+  
+}
+
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item_first {
+
+}
+
+div.jyingo_dropdown_menu div.rowfix { 
+	height:1px;
+	background:#fff;
+	position:relative;
+	top:-1px;
+	padding:0px 3px;
+}
+
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item:hover {
+	background:#f0f0f0;
+
+
+}
+
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item_separator {
+	height:1px;
+	background: #ccc;
+	
+}
+
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item span { display:inline-block; vertical-align:middle; font-size: 13px; }
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item div.icon { background-position:left center; vertical-align:middle; height:16px; display:inline-block; width:20px; margin:2px; background-repeat:no-repeat;}
+ 
+div.jyingo_dropdown_menu { 
+	
+	margin-top: -1px;
+	background: #fff;
+	display:none; 
+	border:1px solid #999;
+
+	position:absolute;
+	z-index: 700000;
+box-shadow: 0px 1px 2px rgba(50, 50, 50, 0.25);
+}
+
+
+
+a.jyingo_dropdown_button img.drop_icon { vertical-align:top; padding-top: 1px; width:10px; height:10px; padding-left:3px; }
+
+a.jyingo_dropdown_button {
+	cursor:default;
+	
+	display: inline-block;
+	padding: 3px;
+  
+  vertical-align:middle;
+	
+	text-decoration:none;
+  color:#777;
+  
+  font-size:12px;
+  border:1px solid transparent;
+  outline:none;
+	
+}
+
+a.jyingo_dropdown_button span { color: #777; }
+
+a.jyingo_dropdown_button img {
+	vertical-align:middle;
+	border:0;
+	padding-right:3px;
+}
+
+img.dropdown_no_label {
+	
+}
+
+
+
+a.jyingo_dropdown_button span {
+	vertical-align:middle;
+	display:inline-block;
+}
+
+a.jyingo_dropdown_button:hover {
+	border:1px solid #999999;
+	color:#555;
+	background: #fff url(/jyingo/jyingo.dropdown/drop1.png) bottom repeat-x;
+box-shadow: 0px 1px 2px rgba(50, 50, 50, 0.25);
+}
+
+a.jyingo_dropdown_button:hover img {
+	filter:none;
+	opacity:1.0;
+}
+
+a.jyingo_dropdown_button_active, a.jyingo_dropdown_button_active:hover {
+	border:1px solid #999999;
+	color:#555;
+	background: #fff;
+
+ 
+	
+}
+
+a.jyingo_dropdown_button_active img, a.jyingo_dropdown_button_active:hover img {
+	filter:none;
+	opacity:1.0;	
+}
+
+a.jyingo_dropdown_button[disabled] {
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow:    none;
+	box-shadow:         none;
+	border-color:#C6C6C6;
+	color:#666;		
+	background-color:#F5F5F5;
+	
+}
+
+/* text */
+
+
+
+a.jyingo_dropdown_text img.drop_icon {  vertical-align:top; padding-top:1px; width:10px; height:10px; padding-left:3px; }
+
+a.jyingo_dropdown_text {
+	
+	
+	cursor:default;
+	
+	display: inline;
+
+	
+	text-decoration:none;
+  color:#666;
+  
+  font-size:12px;
+  outline:none;
+  
+  border:1px solid #ccc;
+  border-radius:3px;
+  
+
+ 	border-color: transparent;
+	
+  
+	
+}
+
+a.jyingo_dropdown_text img {
+	vertical-align:middle;
+	border:0;
+	display: none;
+	padding-right:5px;
+	
+}
+
+a.jyingo_dropdown_text span {
+	vertical-align:middle;
+	display:inline-block;
+}
+
+a.jyingo_dropdown_text:hover {
+	
+  border-color:#999;
+  color:#333;
+	padding: 5px;
+
+
+}
+
+a.jyingo_dropdown_text:hover img {
+	filter:none;
+	opacity:1.0;
+}
+
+a.jyingo_dropdown_text_active, a.jyingo_dropdown_text_active:hover {
+
+  position: relative;
+  z-index:9999999;
+ 	padding:5px;
+  background: #fff;
+ 
+  border-color:#999;
+  color:#333;
+
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  border-bottom:1px solid transparent;
+	
+}
+
+a.jyingo_dropdown_text_active img, a.jyingo_dropdown_text_active:hover img {
+	filter:none;
+	opacity:1.0;	
+}
+
+a.jyingo_dropdown_text[disabled] {
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow:    none;
+	box-shadow:         none;
+	border-color:#C6C6C6;
+	color:#666;		
+	background-color:#F5F5F5;
+	
+}

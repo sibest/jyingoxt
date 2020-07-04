@@ -1,0 +1,91 @@
+/*
+ * jyingoXT, PHP Ajax Toolkit http://www.jyingo.com
+ * Copyright 2011-2020 Andrea Pezzino (haxormail@gmail.com) 
+ * 
+ * WARNING: jyingoXT is not a free source code. You are allowed to use
+ * this source code only under the following terms:
+ *
+ * 1) You must give appropriate credit, provide a link to the license, and
+ * indicate if changes were made. You may do so in any reasonable manner,
+ * but not in any way that suggests the licensor endorses you or your use.
+ * 2) You may not use the material for commercial purposes.
+ * 3) If you remix, transform, or build upon the material, you may
+ *   not distribute the modified material.
+ * 
+ * Please refer to license.txt
+ *  
+ */ 
+ .jyingo_timeline {
+
+ font-size:11px;
+ cursor:default;
+ cursor:default;
+-webkit-user-select: none; 
+-khtml-user-select: none; 
+-moz-user-select: none;
+
+}
+ 
+.jyingo_timeline div.year {
+	border-left:5px solid rgba(0,0,0,0.2);
+}
+.jyingo_timeline div.months {
+	border-left:5px solid rgba(0,0,0,0.3);
+}
+.jyingo_timeline div.days {
+	border-left:5px solid rgba(0,0,0,0.5);
+}
+.jyingo_timeline span { }
+.jyingo_timeline div.year span {
+	color:rgba(0,0,0,0.2);
+}
+
+.jyingo_timeline div.months span {
+	color:rgba(0,0,0,0.3);
+}
+
+.jyingo_timeline div.days span {
+	color:rgba(0,0,0,0.5);
+}
+
+.jyingo_timeline div.selected span {
+	 color:rgba(0,0,0,0.7);
+	  
+}
+.jyingo_timeline div.selected {
+	border-left:5px solid rgba(0,0,0,0.7);
+}
+
+.jyingo_timeline span {
+	padding:4px;
+	display:inline-block;
+	vertical-align:middle;
+	font-family:Arial,Helvetica;
+	position:relative;
+
+}
+
+.jyingo_timeline.active { cursor: none; }
+
+.jyingo_timeline div { outline:0;}
+
+.jyingo_timeline_selector {  -webkit-user-select: none;  opacity:0;  
+-khtml-user-select: none; 
+-moz-user-select: none; position:fixed; width:8px; height:8px; border:1px solid #fff; background-color:#333;  outline:0; z-index:16; display:none; }
+
+.jyingo_timeline_selector.active { background:#cc3300; cursor:none; }
+
+.jyingo_timeline_helper { 
+position:absolute; top:0; left:0; outline:0; 	display:none;
+background:url(/images/p-dx.png) right top no-repeat;
+z-index:444;cursor: none;
+padding:6px; width:200px; }
+
+.jyingo_timeline_helper ul { margin:0; padding:0; list-style-type:none; }
+.jyingo_timeline_helper ul li { padding:4px;font-size:13px; font-family:Arial,Helvetica; color:white; padding-right:6px; }
+
+.jyingo_timeline_indicator {
+	-webkit-user-select: none; 
+-khtml-user-select: none; 
+-moz-user-select: none;cursor: none;
+ position:absolute; top:0; left:0; outline:0;  font-size:10px; font-family:Arial,Tahoma;padding-left:6px; padding-top:2px; z-index:9999991; display:none; height:20px; width:60px; background:url(/images/tl-ev.png) no-repeat; ;color:white; }

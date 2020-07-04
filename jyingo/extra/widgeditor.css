@@ -1,0 +1,174 @@
+.widgToolbar a
+{
+	display: block;
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	text-indent: -1000em;
+	text-decoration: none;
+}
+
+.widgToolbar a:hover
+{
+ filter:alpha(opacity=50);
+ opacity:0.5;
+}
+
+.widgToolbar a:active
+{
+
+}
+
+.widgToolbar li.on a, .widgToolbar li.on a:hover
+{
+
+}
+
+.widgToolbar li.widgEditButton
+{
+
+
+}
+.widgToolbar li.widgEditSelect
+{
+  width:auto;
+  padding-top:8px;
+  height:24px;
+}
+
+.widgButtonBold
+{
+	background-image: url(/jyingo/extra/bold.gif);
+}
+
+.widgButtonHTML
+{
+	background-image: url(/jyingo/extra/widgeditor_button_html.gif);
+}
+
+.widgButtonImage 
+{
+	background-image: url(/jyingo/extra/image.gif);
+}
+
+.widgButtonItalic 
+{
+	background-image: url(/jyingo/extra/italic.gif);
+}
+
+.widgButtonLink
+{
+	background-image: url(/jyingo/extra/link.gif);
+}
+
+.widgButtonOrdered
+{
+	background-image: url(/jyingo/extra/list.gif);
+}
+
+.widgButtonUnordered
+{
+	background-image: url(/jyingo/extra/list.gif);
+}
+
+.widgButtonLeft
+{
+	background-image: url(/jyingo/extra/left.png);
+}
+.widgButtonUnderline
+{
+	background-image: url(/jyingo/extra/underline.gif);
+}
+.widgButtonCenter
+{
+	background-image: url(/jyingo/extra/center.png);
+}
+
+
+.widgSource a
+{
+	background-image: url(/jyingo/extra/widgeditor_button_empty.gif);
+	cursor: default;
+}
+
+.widgSource li.on a, .widgSource li.on a:hover
+{
+	background-position: 0 0;
+}
+
+.widgSource .widgButtonHTML
+{
+	background-image: url(/jyingo/extra/widgeditor_button_html.gif);
+}
+
+.widgSource .widgButtonHTML:hover
+{
+	cursor: pointer;
+}
+
+
+
+
+/* TOOLBAR */
+
+.widgToolbar
+{
+	list-style: none;
+	width: 100%;
+
+	margin: 0;
+  padding:5px 0px;
+ 
+	border: 1px solid #CCCCCC;
+	border-bottom:0;
+	background: #DEDDDE url(/jyingo/extra/widgeditor_toolbar_bg.gif) left top repeat-x;
+	
+}
+
+* html .widgToolbar
+{
+	width: auto;
+}
+
+.widgToolbar li
+{
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+
+	margin-left: 7px;
+ vertical-align:middle;
+}
+
+
+
+
+/* EDITING AREA */
+
+.widgIframe
+{
+	clear: left;
+	width: 100%;
+	height: 200px;
+  border:1px solid #ccc;
+  border-top:0;
+}
+
+.widgContainer textarea.widgEditor
+{
+	clear: left;
+	width: 100%;
+	height: 200px;
+	border-top-width: 1px;
+	padding: 0;
+}
+
+
+
+
+/* EDITOR CONTAINER */
+
+.widgContainer
+{
+}

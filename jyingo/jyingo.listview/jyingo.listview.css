@@ -1,0 +1,103 @@
+/*
+ * jyingoXT, PHP Ajax Toolkit http://www.jyingo.com
+ * Copyright 2011-2012 Andrea Pezzino (haxormail@gmail.com) 
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+ 
+ div.jyingo_listview { display:inline-block; vertical-align:top; position:relative; }
+ div.jyingo_listview div.thead {}
+ div.jyingo_listview div.tbody { }
+ div.jyingo_listview div.tfoot { height:1px; position:absolute; bottom:0px; z-index:1; width: 100%; box-sizing: border-box; -moz-box-sizing: border-box; padding:0px 2px;}
+ 
+ div.jyingo_listview div.tfoot div.tfootline { }
+
+ div.jyingo_listview div.tbody div.tcell { }
+ div.jyingo_listview div.thead span { font-size: 11px; }
+ 
+ div.jyingo_listview span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;  }
+ 
+ 
+ div.jyingo_listview div.trow { padding-left:8px; }
+ div.jyingo_listview div.tcell {  vertical-align: middle;  display:inline-block; vertical-align:top; height:40px; line-height:40px;  overflow: hidden;  white-space: nowrap; }
+ div.jyingo_listview div.tcell:first-child {
+   overflow:visible;	
+   text-overflow:clip;	
+ } 
+ div.jyingo_listview div.tcell a { vertical-align: middle; outline:none; } 
+ div.jyingo_listview div.tcell span { vertical-align: middle;  display:inline-block; height: 40px;}
+ div.jyingo_listview.select div.tbody div.tcell { cursor:pointer; }
+
+ div.jyingo_listview div.tcell input[type=text] { margin-top:4px; }
+ div.jyingo_listview div.align_right { text-align: right; }
+ div.jyingo_listview div.align_center { text-align: center; }
+ 
+ div.jyingo_listview.select div.tbody div.active div.trow {}
+ 
+  div.jyingo_listview.select { cursor: default; }
+
+ div.jyingo_listview.select div.tbody div.tcell {  }
+
+ div.jyingo_listview div.tbody div.tcell:first-child a.jyingo_image, div.jyingo_listview div.tbody div.tcell:first-child a.jyingo_imageframe { }
+ div.jyingo_listview div.tbody div.active div.tcell a.jyingo_image {  }
+
+ div.jyingo_listview div.table_content {  }
+ div.jyingo_listview div.fixed_height { overflow:auto; overflow-y:hidden;  }
+ div.jyingo_listview div.thead div.tcell {  border:0;  height:32px; line-height:32px; }
+ 
+ div.jyingo_listview input.edit { font-size:14px;vertical-align: middle; margin-top:6px; margin-right:30px; }
+  
+ div.jyingo_listview div.thead { margin-bottom:4px; border-bottom:1px solid #D3D3D3;  } 
+ 
+ div.jyingo_listview div.tbody div.trow:hover {   }
+  
+div.jyingo_listview div.thead div.trow div.tcell span { font-size:13px }
+div.jyingo_listview { font-size:20px; color: #999;  }
+div.jyingo_listview a { color: #666; }
+div.jyingo_listview a:hover { text-decoration:underline; }
+div.jyingo_listview div.thead div.trow div.tcell { background-image:none; }
+div.jyingo_listview div.tbody div.trow:first-child { margin-top:0; }
+div.jyingo_listview div.tbody { }
+div.jyingo_listview div.tbody div.trow { position:relative; z-index:1; margin-top:-2px; }
+div.jyingo_listview.list div.tbody div.trow {  }
+div.jyingo_listview.select div.tbody div.trow:hover {border-color:rgba(255,255,255,0.7); zoom:1; z-index:2; }
+div.jyingo_listview div.tbody div.trow div.tcell { background-image:none; }
+div.jyingo_listview div.tbody div.trow:hover div.tcell { }
+div.jyingo_listview div.tbody div.trow:hover div.tcell { }
+
+
+div.jyingo_listview div.tbody div.trow div.tcell span span { font-size:12px; color: #999;  }
+
+div.jyingo_listview div.tbody div.trow div.tcell span span.busy {color: #D94D07; }
+div.jyingo_listview div.tbody div.trow div.tcell span span.user_green_dark {color: #1A8804; }
+div.jyingo_listview div.tbody div.trow div.tcell span span.online {color: #1A8804; }
+
+div.jyingo_listview.select div.tbody div.trow:hover div.tcell span { color: #333;  }
+div.jyingo_listview.select  div.tbody div.trow:hover div.tcell span span {  }
+
+div.jyingo_listview div.tbody div.trow div.tcell div.jyingo_upload { padding-top:8px;}
+ 
+ div.jyingo_listview.select div.tbody div.trow div.tcell:first-child { }
+ div.jyingo_listview.select div.tbody div.trow { border-bottom:1px solid #dedede; border-top:1px solid transparent;  }
+ div.jyingo_listview.select div.tbody div.trow:last-child div.tcell {border-bottom:0; }
+ div.jyingo_listview.select div.tbody div.trow div.tcell { color: #666;  }
+ div.jyingo_listview.select div.tbody div.trow.active div.tcell, div.jyingo_listview.select div.tbody div.trow.active:hover div.tcell  span { color: #333;  }
+ div.jyingo_listview.select div.tbody div.trow:hover { background:#eee; border-top:1px solid #dedede;}
+  div.jyingo_listview.select div.tbody div.trow.active div.tcell span span , div.jyingo_listview.select div.tbody div.trow.active:hover div.tcell  span span  { color:#333; }
+ div.jyingo_listview.select div.tbody div.trow.active, div.jyingo_listview.select div.tbody div.trow.active:hover  { background:#f0f0f0; zoom:1; z-index:2;}
+  div.jyingo_listview.select div.tbody div.trow.active,  div.jyingo_listview.select div.tbody div.trow.active:hover { background:#E3EDFD; border-color:#4285F4;}

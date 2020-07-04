@@ -1,0 +1,79 @@
+/*
+ * jyingoXT, PHP Ajax Toolkit http://www.jyingo.com
+ * Copyright 2011-2020 Andrea Pezzino (haxormail@gmail.com) 
+ * 
+ * WARNING: jyingoXT is not a free source code. You are allowed to use
+ * this source code only under the following terms:
+ *
+ * 1) You must give appropriate credit, provide a link to the license, and
+ * indicate if changes were made. You may do so in any reasonable manner,
+ * but not in any way that suggests the licensor endorses you or your use.
+ * 2) You may not use the material for commercial purposes.
+ * 3) If you remix, transform, or build upon the material, you may
+ *   not distribute the modified material.
+ * 
+ * Please refer to license.txt
+ *  
+ */ 
+
+div.jyingo_tooltip {
+	
+
+  position:absolute;
+  display:none;
+  z-index:999999;
+  
+}
+
+div.jyingo_tooltip div.content { color:#fff; text-align:center; font-size:18px; display:inline-block;  border-radius:6px;	background:#111;
+	padding: 16px;} 
+
+div.jyingo_tooltip div.content span.txt { color: #fff; }
+
+div.jyingo_tooltip_arrow { width:13px; height:13px; position:absolute; z-index:78; 
+ 
+ 
+	top:0;
+	left:0;
+}
+
+div.jyingo_tooltip.black div.content {   background:#121212; 	 }
+div.jyingo_tooltip.black div.content span.txt { color:#f0f0f0; ;  }
+div.jyingo_tooltip.black div.jyingo_tooltip_arrow {
+
+}
+
+div.jyingo_tooltip.red div.content {   background:#EF3A4A; 	 }
+div.jyingo_tooltip.red div.content span.txt { color:#fff; ;  }
+div.jyingo_tooltip.red div.jyingo_tooltip_arrow {
+
+}
+
+
+div.jyingo_tooltip.green div.content {   background:#55C012;  	 }
+div.jyingo_tooltip.green div.content span.txt { color:#fff; }
+div.jyingo_tooltip.green div.jyingo_tooltip_arrow {
+	background-image:url(/images/arrowsgreen.png);
+}
+
+
+div.jyingo_tooltip_arrow_top {
+	background-position:0px -6px;
+	width:13px;
+	height:7px;
+	
+}
+
+div.jyingo_tooltip_arrow_left {
+	background-position:0px -13px;
+}
+
+div.jyingo_tooltip_arrow_right {
+	background-position:0px -26px;
+}
+
+div.jyingo_tooltip_arrow_bottom {
+	background-position:0px -39px;
+	width:13px;
+	height:7px;
+}

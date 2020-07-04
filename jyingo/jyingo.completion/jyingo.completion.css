@@ -1,0 +1,92 @@
+/*
+ * jyingoXT, PHP Ajax Toolkit http://www.jyingo.com
+ * Copyright 2011-2020 Andrea Pezzino (haxormail@gmail.com) 
+ * 
+ * WARNING: jyingoXT is not a free source code. You are allowed to use
+ * this source code only under the following terms:
+ *
+ * 1) You must give appropriate credit, provide a link to the license, and
+ * indicate if changes were made. You may do so in any reasonable manner,
+ * but not in any way that suggests the licensor endorses you or your use.
+ * 2) You may not use the material for commercial purposes.
+ * 3) If you remix, transform, or build upon the material, you may
+ *   not distribute the modified material.
+ * 
+ * Please refer to license.txt
+ *  
+ */ 
+
+div.jyingo_completion_column {
+	
+	background:#eee;
+	padding:8px;
+	font-weight:bold;
+	border-top:1px solid #ccc;
+	
+}
+
+
+
+div.jyingo_completion_element {
+	padding: 8px;
+
+}
+
+div.jyingo_completion_element span.grey {
+	color:#999;
+}
+
+div.jyingo_completion_element.last {
+	border:0;
+}
+
+div.jyingo_completion_element:hover span { 
+
+}
+
+div.jyingo_completion_element:hover {
+
+}
+
+div.jyingo_completion_element.selectable {
+		cursor: pointer;
+}
+
+div.jyingo_completion_element.selectable:hover {
+	background: #4D90FE;
+	color: #f0f0f0;
+}
+
+div.jyingo_completion_element.selectable:hover span { color: #f0f0f0; }
+
+div.jyingo_completion {
+	
+	position:absolute;
+	/*border:1px solid #D9D9D9;*/
+	border-radius: 3px;
+	border-top:0;
+	
+	border-top-left-radius:0;
+	border-top-right-radius:0;
+	background: #fff;
+	
+	z-index: 999999;
+	
+	background:#F4F4F4; 
+	
+	display: none;
+	box-shadow: 0px 1px 0px rgba(50, 50, 50, 0.2);
+	
+}
+
+
+div.jyingo_completion.white {
+	background:#fff;
+	font-size:12px;
+}
+
+div.jyingo_completion._active {
+	
+	border-color:#33C3F0;
+	
+}

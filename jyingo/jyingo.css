@@ -1,0 +1,299 @@
+/*
+ * jyingoXT, PHP Ajax Toolkit http://www.jyingo.com
+ * Copyright 2011-2020 Andrea Pezzino (haxormail@gmail.com) 
+ * 
+ * WARNING: jyingoXT is not a free source code. You are allowed to use
+ * this source code only under the following terms:
+ *
+ * 1) You must give appropriate credit, provide a link to the license, and
+ * indicate if changes were made. You may do so in any reasonable manner,
+ * but not in any way that suggests the licensor endorses you or your use.
+ * 2) You may not use the material for commercial purposes.
+ * 3) If you remix, transform, or build upon the material, you may
+ *   not distribute the modified material.
+ * 
+ * Please refer to license.txt
+ *  
+ */ 
+ 
+.trick3dbf {
+	backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000px; 
+}
+
+div.window_loader { position: fixed; top:0px; left:0px; width:100%; height:100%; z-index:9999; background:rgba(0,0,0,0.5); transition:opacity 150ms; opacity:0; }
+div.window_loader.rotated div.loader {
+
+}
+  
+div.window_loader .loader {
+  margin: 0px;
+  font-size: 10px;
+  position: relative;
+  left:50%;
+  top:50%; 
+  margin-left:-48px;
+  margin-top:-48px;
+  width:96px;
+  height:96px;
+  background:url(/images/loader.png) left center no-repeat;
+  background-size:100%;
+}
+@keyframes play {
+}
+@-webkit-keyframes play {
+	
+}
+
+div#pJyingoDebugDiv {
+	
+	position: fixed;
+	top: 15px;
+	left:15px; 
+	z-index:9999;
+	width:300px;
+	height:300px;
+	background: #fff;
+  border-radius:6px;
+  box-shadow:0px 0px 4px rgba(0,0,0,0.5);
+	overflow: auto;
+	overflow-y:hidden;
+	overflow-x:hidden;	
+}
+
+
+div#pJyingoDebugDiv pre {
+	
+	font-family:"Lucida Console", Monaco, monospace;
+	font-size:10px;
+	color: #333;
+	padding:5px;
+	margin:0;
+	margin-bottom:10px;
+	
+}
+
+a.jyingo_imageframe { display:inline-block; background-size: cover;  -moz-background-size: cover; background-repeat:no-repeat; background-position: center; }
+a.jyingo_imageframe.contain { background-size:contain;  -moz-background-size: contain; }
+div.jyingo_window { display: none; }
+div.jyingo_window.window_popup { position: absolute;  }
+div.jyingo_form {
+	
+}
+
+div.jyingo_checkbox { display:inline-block; }
+div.jyingo_checkbox label { display:inline-block; vertical-align: middle; padding-left:4px; font-weight:normal; }
+div.jyingo_checkbox input { display:inline-block; vertical-align: middle; }
+
+
+div.jyingo_form label.title {
+	color: #666;
+	font-size: 14px;
+}
+
+div.jyingo_form label.subtitle {
+	color: #999;
+	font-size: 11px;
+	padding: 5px;
+	padding-left:0px;
+	padding-top:1px;
+	display:inline-block;
+}
+div.jyingo_form div.formfield { margin-bottom: 10px; }
+div.jyingo_form div.formfield.last { margin-bottom: 0; }
+div.jyingo_form textarea { height: 50px; }
+div.jyingo_form div.formfield input[type=text], div.jyingo_form div.formfield input[type=password], div.jyingo_form textarea  {
+
+}
+
+div.jyingo_form div.formfield select { margin-top:3px; }
+
+div.jyingo_form div.formfield input[type=text].error, div.jyingo_form div.formfield input[type=password].error, div.jyingo_form textarea.error {
+background:#FDD9D9;
+}
+
+.jyingo_image {
+	
+	display:inline-block;
+	overflow: hidden;
+	vertical-align: middle;
+	
+}
+
+.jyingo_image img {
+	
+	position:relative;
+}
+
+.jyingo_image div.imgblackmask {
+	position:absolute;
+	width:100%;
+	height: 100%;
+	background:url(/images/imagemask.png) no-repeat;
+	background-size:100%;
+	top:0;
+	left:0;
+	display:block;
+}
+
+img.jyingo_image_button {
+	cursor:pointer;
+}
+
+img.jyingo_image_button.disabled {
+	cursor:default;
+   filter: url(/css/filters.svg#grayscale);
+   filter: gray;
+   -webkit-filter: grayscale(1); 
+}
+
+div.jyingo_upload {
+	
+	display:inline-block;
+  vertical-align:middle;
+}
+
+input[type=text].locked, input[type=password].locked { cursor:text; color: #999; }
+
+
+a.jyingo_linkbutton span { color: #444; }
+
+a.jyingo_linkbutton {
+		
+	
+	font-family: 'Cabin Condensed',serif;
+	display: inline-block;
+	padding: 6px;
+	border:1px solid #DCDCDC;
+	background-color:#F5F5F5;
+	
+	text-decoration:none;
+  color:#444444;
+  
+  font-size:16px;
+  font-weight:bold;
+  
+  
+  outline:none;
+  vertical-align:middle;
+  
+  cursor:pointer;
+  border-radius: 3px;
+	
+}
+
+a.jyingo_linkbutton img {
+	vertical-align:middle;
+	border:0;
+  filter:alpha(opacity=70);
+	opacity:0.7;
+	padding-right:3px;
+}
+a.jyingo_link i, a.jyingo_linkbutton i {
+	 
+	vertical-align:middle;
+	display:inline-block;
+}
+ 
+a.jyingo_link span, a.jyingo_linkbutton span {
+	vertical-align:middle;
+	display:inline-block;
+}
+
+a.jyingo_linkbutton:hover {
+	
+	font-family: 'Cabin Condensed',serif;
+	
+	background-color:#F8F8F8;
+	color:#2d2d2d;
+	border-color:#C6C6C6;
+	
+	-webkit-box-shadow: 0px 1px 2px rgba(50, 50, 50, 0.1);
+	-moz-box-shadow:    0px 1px 2px rgba(50, 50, 50, 0.1);
+	box-shadow:         0px 1px 2px rgba(50, 50, 50, 0.1);
+	
+}
+
+a.jyingo_linkbutton:hover img {
+	filter:none;
+	opacity:1.0;
+}
+
+
+
+
+
+
+a.jyingo_linkbutton.default {
+	
+	border-color: #3079ED;
+	background: #4D90FE;
+	
+	color:#f0f0f0;
+	
+}
+
+a.jyingo_linkbutton.default span {
+	color:#f0f0f0;
+	text-shadow: 1px 1px rgba(0,0,0,0.3);
+}
+
+a.jyingo_linkbutton.default:hover {
+	
+	border-color: #2F5BB7;
+	background-color:#357AE8;
+
+	
+}
+
+a.jyingo_linkbutton.default:hover span {
+		color: #fff;
+}
+/*
+a.jyingo_linkbutton.jyingo_linkbutton_active, a.jyingo_linkbutton.jyingo_linkbutton_active:hover  {
+	 
+	
+	border-color:#4D90FE;
+	background:#fff;
+	color: #444;
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow:    none;
+	box-shadow:         none;
+
+	padding-top:7px;
+	padding-left:7px;
+  padding-right:5px;
+  padding-bottom:5px;
+	 
+}
+
+a.jyingo_linkbutton.default.jyingo_linkbutton_active, div.jyingo_popupbutton.default.jyingo_linkbutton_active:hover {
+	
+	
+	background-color:#357AE8;
+	border-color: #2F5BB7;
+
+  color: #fff;	
+}
+
+a.jyingo_linkbutton[disabled], a.jyingo_linkbutton[disabled]:hover, a.jyingo_linkbutton.disabled, a.jyingo_linkbutton.disabled:hover  {
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow:    none;
+	box-shadow:         none;
+
+	padding-top:7px;
+	padding-left:7px;
+  padding-right:5px;
+  padding-bottom:5px;
+	
+	opacity: 0.5;
+	
+
+}*/
+
+
+a.jyingo_link.active { background-color: rgba(0,0,0,0.1); border-radius:16px; }
