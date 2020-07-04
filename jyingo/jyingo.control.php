@@ -31,6 +31,8 @@
  	private $_disabled = false;
  	private $_visible = true;
  	private $_delegate = NULL;
+ 	private $_tooltip = NULL;
+ 	
  	
  	public $allow_postback = true;
  	
@@ -535,6 +537,10 @@
  		
  		global $env;
  		
+
+ 		if ($this->_tooltip !== NULL)
+ 		 $this->tooltip($this->_tooltip);
+ 		
  		$env->notify_load($this->get_instance());
  		
  		$this->_skip_finalize = true;
@@ -557,11 +563,14 @@
  			"data" => $this->get_client_data()), $this->get_unique_identifier());
  			
  		}
-
+ 		
+ 		
  		if ($this->load_order == LOAD_ORDER_BOTTOM)
  		 parent::onload(); 		
  		
  		$this->_loaded = true;
+ 		
+ 		
  		
  	}
  	
@@ -976,6 +985,12 @@
   
   function set_property($key, $value)
   {
+  	
+  	if ($key == 'tooltip')
+  	{
+  		 $this->_tooltip = $value;
+  		 return;
+  	}
   	
   	if ($key == 'name')
   	{
