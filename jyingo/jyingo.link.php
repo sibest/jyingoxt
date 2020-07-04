@@ -84,10 +84,15 @@
       
 
      } 
-     
+      
      function get_client_data()
      {
-      return array("href" => $this->href, "paging" => $this->paging, "touchstart" => $this->touchstart);	
+     	$output = array();
+     	if ($this->href) $output['href'] = $this->href;
+     	if ($this->paging) $output['paging'] = true;
+     	if ($this->touchstart) $output['touchstart'] = true;
+     	
+      return $output;
      }
      
      function set_property($key, $value)
