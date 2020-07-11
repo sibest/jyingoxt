@@ -30,6 +30,7 @@
      public $touchstart = false;
      public $anchor;
      public $paging;
+     public $loader = false;
      public $icon;
      
      function __construct($params)
@@ -37,7 +38,7 @@
      	 
      	 parent::__construct($params);
      	 $this->client_vars(array(
-     	  "href", "text"
+     	  "href", "text", "loader"
      	 ));
 
        $this->paging = $params->paging ? $params->paging : false;
@@ -91,6 +92,7 @@
      	if ($this->href) $output['href'] = $this->href;
      	if ($this->paging) $output['paging'] = true;
      	if ($this->touchstart) $output['touchstart'] = true;
+     	if ($this->loader) $output['loader'] = true;
      	
       return $output;
      }
@@ -107,6 +109,9 @@
          
          case 'paging':
           $this->paging = $this->boolean($value);
+         break;
+         case 'loader':
+          $this->loader = $this->boolean($value);
          break;
          
          case 'icon':

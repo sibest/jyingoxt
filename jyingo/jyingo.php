@@ -175,6 +175,7 @@ class jyingo {
  private $root = NULL;
  private $scriptdata = array();
  
+ private $loaded_modules = array();
  private $postback_caller = NULL;
  private $postback_event = NULL;
  private $postback_data = NULL;
@@ -232,10 +233,10 @@ class jyingo {
  
  function serialize($data) {
  
- 	if (is_callable('igbinary_serialize'))
+ 	/*if (is_callable('igbinary_serialize'))
  	 return igbinary_serialize($data);
- 	else
- 	 return serialize($data);
+ 	else*/
+ 	 return  serialize($data);
  	
  }
  
@@ -246,9 +247,9 @@ class jyingo {
  
  function unserialize($data) {
  	
- 	if (is_callable('igbinary_unserialize'))
+ 	/*if (is_callable('igbinary_unserialize'))
  	 return igbinary_unserialize($data);
- 	else
+ 	else*/
  	 return unserialize($data);
  }
  
@@ -394,8 +395,9 @@ class jyingo {
   
 	$phps = array();  
 	$phps = array_merge($phps,  $this->dirsearch($this->JYINGO_DIR, 'php', 'jyingo')); 	
-	$phps = array_merge($phps,  $this->dirsearch($this->JYINGO_DIR, 'page', 'page'));  
-	$phps = array_merge($phps,  $this->dirsearch($this->JYINGO_DIR, 'module', 'module'));
+	$phps = array_merge($phps,  $this->dirsearch($this->JYINGO_DIR.'../module/', 'php'));  
+	$phps = array_merge($phps,  $this->dirsearch($this->JYINGO_DIR.'../page/', 'php'));
+	
 	
 	$max_php_time = 0;
 	foreach ($phps as $phpfile)
@@ -436,8 +438,17 @@ class jyingo {
 
 
 	foreach ($phps as $php)
+	{
+	 ob_start();
 	 include_once $php;	
+	 $template = ob_get_contents();
+	 ob_end_clean();
+	  
+	 $classname = str_replace('.php', '', array_pop(explode('/', $php)));
+
+	 $this->templates[$classname] = $template;
 	 
+	}
   if ($DISABLE_JYINGO)
    return; 
   
@@ -490,7 +501,7 @@ class jyingo {
      
      
      
-     if (!$d)
+     if ($d === NULL)
      {
       
      	 $this->log_http($d[1],'invalid postback');
@@ -529,7 +540,7 @@ class jyingo {
      
      $obj = $this->root->get_by_instance($d[2]);
      	  
-     if (!$obj)
+     if ($obj === NULL)
      {
         
        	$this->log_http($d[1],'unknown object');
@@ -703,6 +714,13 @@ class jyingo {
  
  public function redirect($location, $delay = 0)
  {
+ 	
+ 	 if (headers_sent() == false && !$this->is_postback())
+ 	 {
+ 	   header('Location: '.$location);
+ 	   exit;
+ 	 }
+ 	
  	 $this->client_do(0, 'redirect', array("location" => $location, "delay" => $delay));
  	
  	 
@@ -735,7 +753,7 @@ class jyingo {
  	{
  		 
  		 
- 		 apc_store($id, $compress ? lz4compress($value) : $value, $time);
+ 		 apc_store($id, /*$compress ? lz4compress($value) :*/ $value, $time);
  		 
  	} else {
  	 
@@ -769,8 +787,8 @@ class jyingo {
  	  {
  	  	
  	  	$data = apc_fetch($id);
- 	  	if ($data && $compress)
- 	  		$data = lz4uncompress($data);
+ 	  /*	if ($data && $compress)
+ 	  		$data = lz4uncompress($data);*/
  	  	
  	  } else {
  	   
@@ -855,7 +873,7 @@ class jyingo {
  	 	 if (is_callable('_put_ptempo'))
  	  _put_ptempo('jyingo: before serialize');
  	  
-     $this->appdata = $this->serialize(array("root" => $this->root, "cache" => $this->instance_cache));
+     $this->appdata = /*$this->serialize(*/array("root" => $this->root, "cache" => $this->instance_cache)/*)*/;
      
      
  	 	 if (is_callable('_put_ptempo'))
@@ -866,8 +884,9 @@ class jyingo {
  	                           "data" => $this->appdata,
  	                           "retained" => $this->object_retained,
  	                           "sessiondata" => jyingo::$_S,
- 	                           "sessionid" => $this->session_id,
- 	                           "includes" => $this->includes);
+ 	                           "sessionid" => $this->session_id/*,
+ 	                           "loaded_modules" => $this->loaded_modules,
+ 	                           "includes" => $this->includes*/);
      
      
      $serialized = $this->serialize( $data );
@@ -1108,8 +1127,9 @@ class jyingo {
  	  } else {
  	  	
  	  	 
- 	  	 $this->_unserialized_length += strlen($data);
+ 	  	// $this->_unserialized_length += strlen($data);
  	  	 $d = $this->unserialize($data);//file_get_contents($this->filetree($this->INSTANCE_DIR.$id)));
+
  	  	 if ($d['jyingo_ip'] != $_SERVER['REMOTE_ADDR'])
  	  	 {
  	  	   return false;	
@@ -1125,6 +1145,7 @@ class jyingo {
        
  	  	 $this->appinstance = strtolower($id);	 
 
+/*
  	  	 foreach ($d['includes'] as $classname => $file)
  	  	 {
  	  	 	ob_start();
@@ -1132,16 +1153,10 @@ class jyingo {
  	      $this->templates[$classname] = ob_get_contents();
  	      ob_end_clean();
        }
-       
-       $this->includes = $d['includes'];
-
-
- 	    if (isset($_GET['print_instance']))
- 	    {
- 	     file_put_contents('cache/unserialized2.txt', $d['data']);
-      }
-     
- 	  	 $appdata = $this->unserialize($d['data']);
+       */
+     //  $this->loaded_modules = $d['loaded_modules'];
+     //  $this->includes = $d['includes'];     
+ 	  	 $appdata =  $d['data'];//$this->unserialize($d['data']);
  	  	 
  	  	 $this->root = $appdata['root'];
  	  	 
@@ -1154,7 +1169,8 @@ class jyingo {
  	  	 
  	  	 foreach ($this->object_retained as $obj)
  	  	  $obj->retained();
-       
+      
+ 
        
        
  	  }
@@ -1211,10 +1227,11 @@ class jyingo {
  	    $name = "unnamed_control_".mt_rand(1,9999999);
  	     	
  	  }
- 	  
- 	  if (!class_exists(str_replace('.', '_', $classname)))
+ 	  /*
+ 	  if (!array_key_exists($classname, $this->loaded_modules))
  	  {
- 	  	
+ 	  	  
+ 	  	  $this->loaded_modules[$classname] = 1;
  	      foreach ($this->INCLUDE_PATHS as $path)
  	      {
  	      	
@@ -1237,7 +1254,7 @@ class jyingo {
  	      	
  	      }
  	  	
- 	  } 	
+ 	  } 	*/
  }
 
  public function load($classname, $params = NULL, $view = NULL, $context = NULL)
@@ -1265,9 +1282,11 @@ class jyingo {
  	    $name = "unnamed_control_".mt_rand(1,9999999);
  	     	
  	  }
- 	  
- 	  if (!class_exists(str_replace('.', '_', $classname)))
+ 	  /*
+ 	  if (!array_key_exists($classname, $this->loaded_modules))
  	  {
+ 	  	  
+ 	  	  $this->loaded_modules[$classname] = 1;
  	  	
  	      foreach ($this->INCLUDE_PATHS as $path)
  	      {
@@ -1291,16 +1310,11 @@ class jyingo {
  	      	
  	      }
  	  	
- 	  }
+ 	  }*/
  	  
  	  $classname_clean = str_replace('.', '_', $classname);
  	  $arr = new jyingo_params($params);
- 	  
- 	  if (class_exists($classname_clean) == FALSE)
- 	  {$e = new Exception;
-var_dump($e->getTraceAsString());
-exit;
- 	  }
+
  	  $obj = new $classname_clean($arr);
  	  $obj->set_name($name);
  	  
@@ -1923,10 +1937,21 @@ exit;
  private function parseView($contenuto, $parent = NULL, $template = 'default')
  { 
  	  
+ 	  
+ 	  if (strpos($contenuto, '<!-- template-parse: false -->') !== FALSE)
+ 	  {
+
+	 	   if ($parent === NULL)
+	 	    $parent = new jyingo_viewparser(false);
+
+ 	     $parent->add_child(new jyingo_viewparser(false, $this->minify_html($contenuto)));
+ 	     
+ 	     
+ 	  	 return $parent;
+ 	  } 
+ 	  
+ 	  
  	  $content = $contenuto;
- 	  
- 	  
- 	  
  	  if ($template != 'default')
  	  {
 
@@ -1938,7 +1963,7 @@ exit;
  	  
  	  $content = str_replace(array("\r", "\n"), "", $content);
  	  
- 	  if (!$parent)
+ 	  if ($parent === NULL)
  	   $parent = new jyingo_viewparser(false);
  	
   	$tree = preg_split("~<(/?)([^>]*)>~", $content, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -1946,7 +1971,7 @@ exit;
     
     
     
-    if (!$result)
+    if ($result === NULL)
      return false;
      
     return $result;   
@@ -2058,7 +2083,7 @@ exit;
 	 		 if (in_array($file, $this->scopedcsscache))
 	 		 {
 	 		 	 
-	 		 	 $classname = '.j-'.substr(md5(str_replace('.','_',str_replace('.css','',array_pop(split('/', $file))))),0,8).' ';
+	 		 	 $classname = '.j-'.substr(md5(str_replace('.','_',str_replace('.css','',array_pop(split('/', $file))))),0,8);
 	 		 	 
 				 $regex = array(
 				 "`^([\t\s]+)`ism"=>'',
@@ -2075,17 +2100,20 @@ exit;
 				 $open = 0;
 				 $out = '';
 				 $in_scoped = false;
+				 $scoped_class = '';
 				 foreach ($lines as $line)
 				 {
 				 	
-				 	
-				 	 if ($open == 0 && trim(explode('{', $line, 2)[0]) == '@scoped')
+				 	 $trim = trim(explode('{', $line, 2)[0]);
+				 	 if ($open == 0 && substr($trim,0,7) == '@scoped')
 				 	 {
+				 	 	
+				 	 	 $scoped_class = trim(substr($trim,7));				 	 	
 				 	   $in_scoped = true;
 				 	   $open = substr_count($line, '{')-2;
 				 	   $trim = trim(explode('{', $line, 2)[1]);
 
-				 	   if ($trim) $out .= $classname.' '.$trim.'}';
+				 	   if ($trim) $out .= $classname.$scoped_class.' '.$trim.'}';
 				 	    
 				 	    
 				 	    
@@ -2102,16 +2130,19 @@ exit;
 				 	 	 continue;
 				 	 }
 				 	 
-				 	 if (trim(explode('{', $line, 2)[0]) == '@self')
-				 	 	 $line = $classname.substr($line,5);
+				 	 $line = str_replace('@self', $classname, $line);
 				 	 
-				 	 if ($in_scoped && $open == 0 && trim($line[0]) != '@') $out .= $classname;
+				 	 //if (substr(trim(explode('{', $line, 2)[0]),0,5) == '@self')
+				 	 //	 $line = $classname.substr($line,5);
+				 	 
+				 	 if ($in_scoped && $open == 0 && trim($line[0]) != '@') $out .= $classname.$scoped_class;
 				 	 
 				 	 
 				 	 if ($open >= 0)
 				 	 $out .= $line.'}';
 				 	 
 				 }
+				 
 				  				 				 
 				 $css = preg_replace('/\s+/', ' ', $out);
 
@@ -2146,7 +2177,7 @@ exit;
 
  function get_sound_manager()
  {
- 	 if (!$this->body()->get('smgr'))
+ 	 if ($this->body()->get('smgr') === NULL)
  	 $this->_soundmgr =
  	  $this->body()->load('smgr:jyingo.soundmanager');
  	 
@@ -2221,13 +2252,34 @@ exit;
  	 if ($parent == NULL)
  	 	$parent = new jyingo_control();
    
-   if (!$this->buildViewArray($res, $parent))
+   if ($this->buildViewArray($res, $parent) === NULL)
    {
      $this->error('buildView exception');	
    }
  	  	 
  	 return $parent; 	 
  
+ }
+ 
+ private function minify_html($buffer) {
+
+    $search = array(
+        '/\>[^\S ]+/s',
+        '/[^\S ]+\</s',
+        '/(\s)+/s',
+        '/<!--(.|\s)*?-->/'
+    );
+
+    $replace = array(
+        '>',
+        '<',
+        '\\1',
+        ''
+    );
+
+    $buffer = preg_replace($search, $replace, $buffer);
+
+    return $buffer;
  }
  
  private function buildViewArray($contenuto, $offset)
@@ -2261,7 +2313,7 @@ exit;
 
         }
 
- 	      if (!$this->buildViewArray($child, $obj))
+ 	      if ($this->buildViewArray($child, $obj) === NULL)
  	    	  return false; 	   
  	    	
  	    } else {

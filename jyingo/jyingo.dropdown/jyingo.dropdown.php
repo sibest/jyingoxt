@@ -31,6 +31,7 @@ class jyingo_dropitem extends jyingo_control {
      protected $mode = 'select';
      protected $content;
      protected $href;
+     protected $paging;
      protected $target;
      private $optgroup;
      protected $script = '';
@@ -40,6 +41,8 @@ class jyingo_dropitem extends jyingo_control {
      {
      	 
      	 parent::__construct($params);
+       
+       $this->paging = $params['paging'] ? $params['paging'] : false;
        
        if ($params['text'] || $params['icon'])
        {
@@ -108,7 +111,7 @@ class jyingo_dropitem extends jyingo_control {
      {
 
      	 $data = array();
-       return array("value" => $this->value, "optgroup" => $this->optgroup, "text" => $this->text, "icon" => $this->icon, "target" => $this->target, 
+       return array("paging" => $this->paging, "value" => $this->value, "optgroup" => $this->optgroup, "text" => $this->text, "icon" => $this->icon, "target" => $this->target, 
        "mode" => $this->mode, "content" => $this->content, "checked" => $this->checked, "href" => $this->href, "script" => $this->script);
       	
      }
@@ -164,6 +167,11 @@ class jyingo_dropitem extends jyingo_control {
        
        case 'icon':
         $this->icon = $value;
+       break;
+
+       
+       case 'paging':
+        $this->paging = \boolval($value);
        break;
 
        case 'mode':

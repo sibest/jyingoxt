@@ -22,7 +22,7 @@
    public $active_tag = 'php:option';
    public $text = NULL;
    public $value = NULL;
-   private $_selected = false;
+   public $_selected = false;
    
    function __construct($params)
    {
@@ -120,6 +120,12 @@
       return;	
      }
      
+     if ($name == 'selected')
+     {
+       $this->_selected = \boolval($value);
+       return;	
+     }
+     
      if ($name == 'text')
      {
        $this->text = $value;
@@ -148,7 +154,7 @@
        $this->load_order = LOAD_ORDER_BOTTOM;
        $this->set_client_instance('jyingo.select');
        
-       $this->allow_event('click');
+       $this->allow_event('change');
        
        $this->allow_postback = false;
 
@@ -166,6 +172,10 @@
      	  if ($obj && $obj instanceof jyingo_option && $this->selected != $obj)
      	  {
      	  	
+     	     $children = $this->get_children('jyingo_option');
+	       	 foreach ($children as $child)
+	     	  	 $child->_selected = false;
+     	  
      	  	 $obj->select();
      	  	 
      	  }
@@ -228,7 +238,12 @@
      function get_selected()
      {
      	 
-       return $this->selected;	 
+     	 $children = $this->get_children('jyingo_option');
+     	 foreach ($children as $child)
+     	  if ($child->selected)
+     	  	 return $child;
+     	  
+     	 return NULL;
      	 
      }
      

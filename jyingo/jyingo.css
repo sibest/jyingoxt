@@ -201,8 +201,11 @@ a.jyingo_link span, a.jyingo_linkbutton span {
 	vertical-align:middle;
 	display:inline-block;
 }
-
 a.jyingo_linkbutton:hover {
+	
+	font-family: 'Cabin Condensed',serif;
+}
+a.jyingo_linkbutton:not(.disabled):hover {
 	
 	font-family: 'Cabin Condensed',serif;
 	
@@ -235,12 +238,17 @@ a.jyingo_linkbutton.default {
 	
 }
 
+a.jyingo_linkbutton.disabled {
+	opacity: 0.5;
+  cursor:default;
+}
+
 a.jyingo_linkbutton.default span {
 	color:#f0f0f0;
 	text-shadow: 1px 1px rgba(0,0,0,0.3);
 }
 
-a.jyingo_linkbutton.default:hover {
+a.jyingo_linkbutton.default:not(.disabled):hover {
 	
 	border-color: #2F5BB7;
 	background-color:#357AE8;
@@ -248,7 +256,7 @@ a.jyingo_linkbutton.default:hover {
 	
 }
 
-a.jyingo_linkbutton.default:hover span {
+a.jyingo_linkbutton.default:not(.disabled):hover span {
 		color: #fff;
 }
 /*
@@ -295,5 +303,3 @@ a.jyingo_linkbutton[disabled], a.jyingo_linkbutton[disabled]:hover, a.jyingo_lin
 
 }*/
 
-
-a.jyingo_link.active { background-color: rgba(0,0,0,0.1); border-radius:16px; }

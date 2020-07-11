@@ -37,6 +37,7 @@
  	public $allow_postback = true;
  	
  	public $tag;
+ 	public $index = -1;
  	
  	private $scriptdata;
  	private $scriptprops = array("disabled", "visible", "classname");
@@ -265,12 +266,46 @@
   public function shift($classname, $params = NULL, $view = NULL, $context = NULL)
   {
    
+  	global $env;
    if ($this->_loaded)
     $env->push_loading();
    
    $obj = $env->load($classname, $params, $view, $context);
    
    $this->insert_before($obj);
+   
+    if ($this->_loaded)
+    $env->pop_loading();
+    
+   return $obj;
+  }
+  
+  public function load_after($after, $classname, $params = NULL, $view = NULL, $context = NULL)
+  {
+   
+  	global $env;
+   if ($this->_loaded)
+    $env->push_loading();
+   
+   $obj = $env->load($classname, $params, $view, $context);
+   
+   $this->add_child($obj, $after);
+   
+    if ($this->_loaded)
+    $env->pop_loading();
+    
+   return $obj;
+  }
+  public function shift_before($before, $classname, $params = NULL, $view = NULL, $context = NULL)
+  {
+   
+  	global $env;
+   if ($this->_loaded)
+    $env->push_loading();
+   
+   $obj = $env->load($classname, $params, $view, $context);
+   
+   $this->insert_before($obj, $before);
    
     if ($this->_loaded)
     $env->pop_loading();
@@ -441,7 +476,12 @@
   	return false;
   	
   }
-
+ 
+  public function get_index()
+  {
+  	return $this->index;
+  }
+ 
   function is_call_allowed($call)
   {
   	
@@ -613,7 +653,7 @@
  			 if (!$this->_visible)
  			  return false;
  			 
- 			 if (!$this->get_parent())
+ 			 if ($this->get_parent() === NULL)
  			 {
  			  return true;	
  			 }
@@ -627,7 +667,7 @@
  			 if ($this->_disabled)
  			  return true;
  			 
- 			 if (!$this->get_parent())
+ 			 if ($this->get_parent() === NULL)
  			 {
  			  return false;	
  			 }
@@ -907,7 +947,7 @@
   	  	    while (!($obj instanceof jyingo_module))
   	  	    {
   	  	    	 $obj = $obj->get_parent();
-  	  	    	 if (!$obj) break;
+  	  	    	 if ($obj === NULL) break;
   	  	    }
   	  	    
   	  	    $function_name = array($obj, $function_name);
@@ -995,6 +1035,12 @@
   	if ($key == 'name')
   	{
   		 $this->set_name($value);
+  		 return;
+  	}
+  	
+  	if ($key == 'index')
+  	{
+  		 $this->index = $value;
   		 return;
   	}
   	

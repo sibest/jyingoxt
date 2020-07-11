@@ -32,7 +32,7 @@
      	 
      	 parent::__construct($params);
      	 $this->client_vars(array(
-     	  "text"
+     	  "text", "icon"
      	 ));
 
        $this->set_client_instance('jyingo.label');
@@ -44,6 +44,9 @@
      function render() {
            
        echo '<'.$this->tagname.' id="'.$this->get_instance().'"'.$this->get_property_string(' ').'>';
+       
+       if ($this->icon)
+        echo '<i class="'.$this->icon.'"></i>';
        
        if (count($this->children) && !$this->textchanged)
        {
@@ -79,6 +82,12 @@
 	 		   	$this->textchanged = TRUE;
 
          break;
+
+         case 'icon':
+          $this->icon = $value;
+	 		   	$this->textchanged = TRUE;
+
+         break;
          
          case 'tag':
           $this->tagname = $value;
@@ -97,6 +106,13 @@
          
        }	
      	
+     }
+     
+     function add_icon($icon)
+     {
+       $values = explode(' ', $this->icon);
+       $values[] = $icon;
+       $this->icon = trim(implode(' ', $values));	
      }
      
      function __get($key)
@@ -123,6 +139,11 @@
      	   return $this->content;
      	  break;	
      	 	
+     	  
+     	  case 'icon':
+     	   return $this->icon;
+     	  break;	
+     	 	
      	 	default:
      	 	 return parent::__get($key);
      	 	
@@ -147,6 +168,14 @@
           $this->textchanged = TRUE;
           
           $this->update_client_prop('text');
+          
+         return;
+         case 'icon':
+          $this->icon = $value;
+          $this->content_entity = TRUE;
+          $this->textchanged = TRUE;
+          
+          $this->update_client_prop('icon');
           
          return;
          

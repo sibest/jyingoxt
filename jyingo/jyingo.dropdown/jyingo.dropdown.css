@@ -143,6 +143,11 @@ div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item:hover {
 
 }
 
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item.container:hover {
+	background: transparent !important;
+	cursor:default !important;
+}
+
 div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item_separator {
 	height:1px;
 	background: #ccc;
@@ -150,7 +155,7 @@ div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item_separator {
 }
 
 div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item span { display:inline-block; vertical-align:middle; font-size: 13px; }
-div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item div.icon { background-position:left center; vertical-align:middle; height:16px; display:inline-block; width:20px; margin:2px; background-repeat:no-repeat;}
+div.jyingo_dropdown_menu div.jyingo_dropdown_menu_item div.icon { background-position:center; vertical-align:middle; height:32px; display:inline-block; width:32px; margin:4px; background-repeat:no-repeat; background-size: 100%; }
  
 div.jyingo_dropdown_menu { 
 	
@@ -169,8 +174,8 @@ box-shadow: 0px 1px 2px rgba(50, 50, 50, 0.25);
 a.jyingo_dropdown_button img.drop_icon { vertical-align:top; padding-top: 1px; width:10px; height:10px; padding-left:3px; }
 
 a.jyingo_dropdown_button {
-	cursor:default;
-	
+	cursor:pointer;
+	 
 	display: inline-block;
 	padding: 3px;
   

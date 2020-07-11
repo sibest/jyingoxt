@@ -22,6 +22,7 @@
  	 public $active_tag = 'php:frame';
  	 public $tagname = 'div';
  	 public $class2n = false;
+ 	 public $aligned = false;
  	 public $clickable;
  	 
    function __construct($params)
@@ -44,7 +45,7 @@
  	 
  	 function get_client_data()
  	 {
- 	  return array("class2n" => $this->class2n, "clickable" => $this->clickable);	
+ 	  return array("class2n" => $this->class2n, "clickable" => $this->clickable, "aligned" => $this->aligned);	
  	 }
  	 
  	 function render()
@@ -91,6 +92,12 @@
  	 	 if ($k == 'clickable')
  	 	 {
  	 	   $this->clickable = $this->boolean($v);
+ 	 	   return;	
+ 	 	 }
+ 	 	 
+ 	 	 if ($k == 'aligned')
+ 	 	 {
+ 	 	   $this->aligned = $this->boolean($v);
  	 	   return;	
  	 	 }
  	 	 

@@ -39,13 +39,15 @@ jyingo.dropitem.prototype = {
 	  this.icon = data['icon'];
 	  this.href = data['href'];
 	  this.value = data['value'];
+	  this.paging = data['paging'];
 	  this.mode = data['mode'];
 	  this.checked = data['checked'];
 	  this.target = data['target'];
 	  this.optgroup = data['optgroup'];
 	  this.script = data['script'];
+	  
 	  this._element.className = 'jyingo_dropdown_menu_item';
-
+    if (this.mode == 'container') $(this._element).addClass('container');
 	  
 	  if ( document.getElementById(this.get_instance()) )
 	  {
@@ -61,7 +63,18 @@ jyingo.dropitem.prototype = {
 	  }
 	 // this.$ = $(this._element);
 	  
-	  this.delegate('click', this.click);
+	  this.delegate('ontouchstart' in document.documentElement ? 'touchstart' : 'click', this.click);
+	  if ('ontouchstart' in document.documentElement)
+	  {
+	      	$(this.$).click(function (event) {
+	      		 
+	      		 event.stopPropagation();
+	      		 jyingo.cancel_event(event);
+	      		 
+	      	});
+	  }
+	  
+//	  this.delegate('click', this.click);
 	  this.delegate('mousedown', this.mousedown);
 	  
 	  if (this.mode != 'container')
@@ -125,10 +138,24 @@ jyingo.dropitem.prototype = {
 	  
 	  if (this.mode == 'href')
 	  {
-	  	if (this.target == '_blank')
-	  	 window.open(this.href);
-	  	else
-	  	 location.href = this.href;
+	  	
+	  	if (this.paging)
+	  	{
+	  		
+	  		
+			
+				if (jyingo.get_window_manager())
+				 jyingo.get_window_manager().set_hash_position(this.href);
+				 
+	      this.get_parent().hide();
+	  		
+	  	} else {
+		  	
+		  	if (this.target == '_blank')
+		  	 window.open(this.href);
+		  	else
+		  	 location.href = this.href;
+		  }
 	  }
 	  
 	  if (this.mode == 'checkbutton' || this.mode == 'button')
@@ -246,6 +273,7 @@ jyingo.dropdown = function(params)
  	this.output = new Array(0, 0);
  	this._rowfix = null;
  	this._label = true;
+ 	this._eat = false;
   
 };
 
@@ -261,7 +289,9 @@ jyingo.dropdown.prototype = {
 	  this._element.parentNode.removeChild(this._element);
 	  document.body.appendChild(this._element);
 		
-	 	this._element.className = (data['class'] ? data['class'] : 'jyingo_dropdown_menu');
+		$(this._element).addClass('jyingo_dropdown_menu');
+		if (data['class']) $(this._element).addClass(data['class']);
+	 	//this._element.className = (data['class'] ? data['class'] : 'jyingo_dropdown_menu');
 
 	  
 	  this.hide_handler = (data['onhide'] ? data['onhide'] : null);
@@ -334,7 +364,16 @@ jyingo.dropdown.prototype = {
 	    this.button_obj.href = '#';
 	    
 	    //this.delegate('mouseout', this.button_up, this.button_obj);
-	    this.delegate('click', this.button_down, this.button_obj);
+	    this.delegate('ontouchstart' in document.documentElement ? 'touchstart' : 'click', this.button_down, this.button_obj);
+	    if ('ontouchstart' in document.documentElement)
+	    {
+	      	$(this.button_obj).click(function (event) {
+	      		 
+	      		 event.stopPropagation();
+	      		 jyingo.cancel_event(event);
+	      		 
+	      	});
+	    }
 	    //this.delegate('mouseup', this.button_up, this.button_obj);
 	    
 	    
@@ -516,6 +555,12 @@ jyingo.dropdown.prototype = {
 	hide : function() {
 		 
 		 
+		 if (this._eat)
+		 {
+		  this._eat = false;
+		  return;	
+		 }
+		 
 		 if (this.showing == false)
 		  return;
 		  
@@ -601,6 +646,9 @@ jyingo.dropdown.prototype = {
 		
 		jyingo.cancel_event(ev);
 		
+		if ('ontouchstart' in document.documentElement)
+		 this._eat = true;
+		
 		return false;
 	},
 	
@@ -625,7 +673,7 @@ jyingo.dropdown.prototype = {
 		if (this.selected == false)
 		{
 			
-			  this.button_span.innerHTML = (this._label == true ? this.button_text : '') + '<img src="/jyingo/jyingo.dropdown/d1.gif" class="drop_icon"/>';
+			  this.button_span.innerHTML = (this._label == true ? this.button_text : '');// + '<img src="/jyingo/jyingo.dropdown/d1.gif" class="drop_icon"/>';
 			  if (this.button_icon)
 			  {
 			  	
@@ -638,7 +686,7 @@ jyingo.dropdown.prototype = {
 			
 		} else {
 			
-			this.button_span.innerHTML = (this._label == true ? this.selected.text : '') + '<img src="/jyingo/jyingo.dropdown/d1.gif" class="drop_icon"/>';
+			this.button_span.innerHTML = (this._label == true ? this.selected.text : '');// + '<img src="/jyingo/jyingo.dropdown/d1.gif" class="drop_icon"/>';
 			if (this.selected.icon)
 			{	
 			  this.button_obj.img.src = this.selected.icon;

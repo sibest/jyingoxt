@@ -1,25 +1,21 @@
 <?
 /*
  * jyingoXT, PHP Ajax Toolkit http://www.jyingo.com
- * Copyright 2011-2012 Andrea Pezzino (haxormail@gmail.com) 
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright 2011-2014 Andrea Pezzino (haxormail@gmail.com) 
+ * 
+ * WARNING: jyingoXT is not open source. You are allowed to use
+ * this source code only under the following terms:
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
+ * 1) You must give appropriate credit, provide a link to the license, and
+ * indicate if changes were made. You may do so in any reasonable manner,
+ * but not in any way that suggests the licensor endorses you or your use.
+ * 2) You may not use the material for commercial purposes.
+ * 3) If you remix, transform, or build upon the material, you may
+ *   not distribute the modified material.
+ * 
+ * Please refer to license.txt
+ *  
+ */ 
  
   define('LV_SHIFT_CTRL', 1);
   define('LV_SHIFT_LEFT', 2);
@@ -57,6 +53,7 @@
     private $selected = false;
     private $mode = NULL;
     
+    private $href = NULL;
     private $hidden = array();
     
     private $shifter = 0;
@@ -87,7 +84,7 @@
   	{
   		$this->client_call('focus');
   	}
-  	
+  	  	
   	function set_selected($sel)
   	{
 
@@ -185,7 +182,7 @@
   	
   	function get_client_data()
   	{
-  		return array("mode" => $this->mode, "selected" => $this->selected);
+  		return array("mode" => $this->mode, "selected" => $this->selected, "href" => $this->href);
   	}
   	
     function render()
@@ -246,7 +243,7 @@
   	function add_column($width, $key, $type, $value = NULL, $classes = '', $align = 'left')
   	{
   		
-  		if ($type != 'hidden')
+  		if ($type != 'hidden' && $type != 'href')
   		{
   		 $cell = $this->load('jyingo.frame', array("class" => "tcell"));
   		 if ($classes) 
@@ -255,13 +252,21 @@
   		 if ($align != 'left')
   		  $cell->add_class('align_'.$align);
   		 
-  		 if ($width)
+  		 if (is_numeric($width))
   		  $cell->set_style('width', $width.'px');
-  		 
+  		 else if ($width)
+  		  $cell->set_style('width', $width);
+  		  
   		 $this->columns[$key] = $cell;
   		}
   		switch ($type)
   		{
+  			 
+  			 case 'href':
+  			  
+  			  $this->href = $value['href'];
+  			  
+  			 break;
   			 
   			 case 'object':
   			  $cell->add_child($value);
@@ -295,7 +300,11 @@
    		    $obj = $cell->load($key.':jyingo.link', array("text" => $value));
   		    $obj->set_event_handler('click', array($this, 'column_btn_click')); 			 
   			 break;
-
+  			 
+  			 case 'url':
+   		    $obj = $cell->load($key.':jyingo.link', array("text" => $value, "href" => $value, "target" => "_blank"));
+  		    $obj->set_event_handler('click', array($this, 'column_btn_click')); 			 
+  			 break;
   			 
   		   case 'textbox':
   		   
@@ -362,7 +371,6 @@
   		    
   		    $cell->load('jyingo.label', array("class" => "centerer"));  		   
   		   break;
-  		   
   		   case 'image':
   		   
   		    $src = $value;
@@ -388,8 +396,7 @@
   		     $obj->visible = false;
   		    
   		    $cell->load('jyingo.label', array("class" => "centerer"));
-  		   break;
-  		   
+  		   break;  		   
   		   case 'value':
   		    $obj = $cell->load($key.':jyingo.label', array("value" => $value, "tag" => "div"));
   		   break;
@@ -398,13 +405,19 @@
   		    $obj = $cell->load($key.':jyingo.label', array("text" => $value));
   		    $obj->set_style('width',$width.'px');
   		   break;
-  		   case 'label':
+   		   case 'label':
   		    $obj = $cell->load($key.':jyingo.label', array("text" => $value));
-  		   break;
-  		   
+  		   break; 		   
   		   case 'button':
   		    $obj = $cell->load($key.':jyingo.linkbutton', array("text" => $value));
   		    $obj->set_event_handler('click', array($this, 'column_btn_click'));
+  		   break;   
+  		   case 'imagebutton':
+  		   if ($value)
+  		   {
+  		    $obj = $cell->load($key.':jyingo.imagebutton', array("src" => $value));
+  		    $obj->set_event_handler('click', array($this, 'column_btn_click'));
+  		   }
   		   break;
   			
   		}
@@ -440,6 +453,7 @@
     public $selectable = false;
     
     private $_menu = false, $_menurequest, $_selrow;
+    private $_limit_from, $_limit, $_sortable_key, $_sortable_order;
     
     function __construct($params)
     {
@@ -465,8 +479,96 @@
        $this->add_class('jyingo_listview');
        $this->set_client_instance('jyingo.listview');
        
+       $this->_limit_from = 0;
+       $this->_limit = 20;
+       $this->_sortable_order = true;
+       $this->_current_real_count = 0;
+       
+       
+       if ($params->table == true)
+        $this->add_class('table_mode');
        
     	
+    }
+    
+    function set_sortable_key($key)
+    {
+    	$this->_sortable_key = $key;
+    	foreach ($this->col_setup as $_key => $data)
+    	{
+    		 if ($data['sortable'])
+    		 {
+    		 	 
+    		 	  $data['head']->text = str_replace('?', '', $data['head']->text);
+    		 	  $data['head']->text = str_replace('?', '', $data['head']->text);
+    		 	  if ($key != $_key)
+    		 	  {
+    		 	  
+    		  	} else {
+    		  	 
+    		  	 if ($this->_sortable_order)
+    		  	   $data['head']->text .= ' ?';
+    		  	 else
+    		  	   $data['head']->text .= ' ?';
+    		  	   
+    		  	 
+    		  	 
+    		  	}
+    		 	
+    		 }
+    	}
+    }
+    
+    function set_real_count($count)
+    {
+    	$this->_current_real_count = $count;
+
+    	if ($this->_limit_from > $this->_current_real_count -1)
+    	 $this->_limit_from = $this->_current_real_count-1;
+    }
+    
+    function go_next()
+    {
+    	$this->_limit_from += $this->_limit;
+    	if ($this->_limit_from > $this->_current_real_count -1)
+    	 $this->_limit_from = $this->_current_real_count-1;
+    	 
+    	$this->event('navigate');
+    	 
+    }
+    
+    function go_back()
+    {
+    	$this->_limit_from -= $this->_limit;
+    	if ($this->_limit_from <= 0)
+    	 $this->_limit_from = 0;
+    	
+    	$this->event('navigate');
+    }
+    
+    function set_sortable_order($order)
+    {
+    	$this->_sortable_order = $order;
+    }
+    
+    function get_sortable_key()
+    {
+     return $this->_sortable_key;
+    }
+
+    function get_sortable_order()
+    {
+    	return $this->_sortable_order;
+    }
+    
+    function get_current_limit()
+    {
+    	return $this->_limit;
+    }
+    
+    function get_current_offset()
+    {
+    	 return $this->_limit_from;
     }
     
     function menu_click($caller, $value)
@@ -483,9 +585,9 @@
     	
     }
     
-    function menu($params = array())
+    function menu($index = -1, $params = array())
     {
-    	
+    	 
     	if ($this->_menu != false)
     	{
     		 $this->_menu->remove();
@@ -493,7 +595,9 @@
     	}
     	
     	$this->_menurequest = true;
-    	
+    	if ($index != -1)
+    	 $this->_selrow = $index;
+    	 
     	$params['button'] = false;
     	
     	$obj = $this->load('jyingo.dropdown', $params);
@@ -551,6 +655,16 @@
     function end_rename($caller, $column, $oldvalue, $newvalue)
     {
     	$this->client_call('end_rename');
+    	
+      $i = -1;
+	    	
+	    $children = $this->body->get_children_ordered();
+	    
+	    foreach ($children as $index => $item)
+	    if ($item->get_instance() == $caller->get_instance()) {  $i = $index; break; }    	
+	    
+	    $this->event('rename', $this, $i, $column, $oldvalue, $newvalue); 
+    	
     }
     
     function preview()
@@ -738,6 +852,11 @@
     			
     		}
     		
+    		if ($type == 'href')
+    		{
+    			 $value = array("href" => $value);
+    		}
+    		
 
     		if ($type == 'select' && !is_array($value) && $this->col_setup[$this->col_order[$index]]['items'])
     		{
@@ -752,11 +871,9 @@
     		}
 
     		
-    		if (($type == 'image' || $type =='imageframe') && !is_array($value) && $this->col_setup[$this->col_order[$index]]['width'] && $this->col_setup[$this->col_order[$index]]['height'])
-    		{
-    			
+		    if (($type == 'image' || $type =='imageframe') && !is_array($value) && $this->col_setup[$this->col_order[$index]]['width'] && $this->col_setup[$this->col_order[$index]]['height'])
+    	  {
     			$value = array("src" => $value, "width" => $this->col_setup[$this->col_order[$index]]['width'], "height" => $this->col_setup[$this->col_order[$index]]['height']);
-    			
     		}
     		
     		$item->add_column($this->col_widths[$index], $this->col_order[$index], $type, $value, $this->col_setup[$this->col_order[$index]]['class'], $this->col_setup[$this->col_order[$index]]['align']);
@@ -776,7 +893,7 @@
     
     function context_click($caller)
     {
-    	
+    	global $env;
       $caller->select($caller, true);
       
       $this->_menurequest = false;
@@ -787,6 +904,7 @@
     	
     	foreach ($children as $index => $item)
     	 if ($item->get_instance() == $caller->get_instance()) {  $i = $index; break; }
+      
       
       $this->_selrow = $i;
       
@@ -870,6 +988,7 @@
     	$row = $this->header->load('jyingo.frame', array("class" => "trow"));
     	$cols = array();
     	$i = 0;
+    	$s = NULL;
     	
     	foreach ($set as $key => $column)
     	{
@@ -881,6 +1000,7 @@
     	   $placeholder = $column['placeholder'];
     	   $checked = $column['checked'];
 				 $items = $column['items'];
+				 $sortable = $column['sortable'] ? true : false;
 				 $width = $column['width'];
 				 $height = $column['height'];
 				 $align = $column['align'] ? $column['align'] : 'left';
@@ -894,22 +1014,40 @@
 				 {
 				 //  	$width += 2;
 				 }
+				 
+				 
+
 				     	   
     	   if ($this->order == 'auto' && $type == 'label') $this->order = $key;
 
          $col = NULL;
 
-         if ($type != 'hidden')
+         if ($type != 'hidden' && $type != 'href')
          {
 	    		 $col = $row->load('jyingo.frame', array("class" => "tcell"));
-	    		 if ($width)
+	    		 if (is_numeric($width))
 	    		  $col->set_style('width', $width.'px');
-    		   
-    		   $val = $col->load('value:jyingo.label');
+	    		 else if ($width)
+	    		  $col->set_style('width', $width);
+           					
+					 if ($sortable)
+					 {
+					 	if (!$s) $s = $key;
+					 	$val = $col->load('value:jyingo.link');
+					 	$val->set_event_handler('click', array($this, '_set_column_sortable_key'));
+					 	$val->tag = $key;
+					 	
+					 } else {
+    		   	$val = $col->load('value:jyingo.label');
+					 }    		   
     		   
     		   if ($align != 'left')
     		    $col->add_class('align_'.$align);
+
+
     		   
+    		 } else {
+    		    $sortable = false;	
     		 }
     		 
     		 $cols[$key] = $col;
@@ -919,12 +1057,27 @@
     		 else if (is_object($val)) $val->text = $text;
     		 
     		 $this->col_order[] = $key;
-    		 $this->col_setup[$key] = array("type" => $type, "class" => $class, "align" => $align, "placeholder" => $placeholder, "items" => $items, "width" => $item_width, "height" => $height);
+    		 $this->col_setup[$key] = array("type" => $type, "head" => $val, "sortable" => $sortable, "class" => $class, "align" => $align, "placeholder" => $placeholder, "items" => $items, "width" => $item_width, "height" => $height);
     		
     	}
     	
     	$this->col_headers = $cols;
     	
+    	if ($s)
+    	 $this->set_sortable_key($s);
+    	
+    }
+    
+    function _set_column_sortable_key($caller)
+    {
+     global $env;
+     $key = $caller->tag;
+     
+     if ($key == $this->_sortable_key)
+      $this->_sortable_order ^= true;
+     
+     $this->set_sortable_key($key);
+     $this->event('sort_changed');
     }
  
     

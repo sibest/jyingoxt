@@ -198,8 +198,8 @@
  	  	foreach ($this->children as $child)
  	  	{
  	  		 
- 	  		 if ($child->has_name($object))
- 	  		 {
+ 	  		 if ($child->has_name($object_name) && $child->index == $index)
+ 	  		 { 
  	  		 	$this->child_ref_cache[$object] = $child;
  	  		  return $child;
  	  		 }

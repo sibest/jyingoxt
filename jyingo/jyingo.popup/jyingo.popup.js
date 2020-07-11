@@ -149,6 +149,8 @@ var _jyingo_popup_transition_style = 'slide-fade';
 
 jyingo.extend('popup', function(self, settings, shared) {
 	
+	var _showTimer = 0;
+	
 	if (!shared.popup_stack)
 	{
 		 shared.popup_stack = [];
@@ -456,6 +458,13 @@ jyingo.extend('popup', function(self, settings, shared) {
 		
 		_will_autoremove_after_cancel : function()
 		{ 
+			
+			 if (this.$.attr('cancelurl'))
+			 {
+			  location.href=this.$.attr('cancelurl');
+			  return true;
+			 }
+			 
 			 this.hide();
 			 if (this.autoremove == true)
 			   return true;
@@ -484,7 +493,7 @@ jyingo.extend('popup', function(self, settings, shared) {
 			{
 				this._hideMask();
 			} else {
-				jyingo._showing_mask_div.style.zIndex = jyingo._popup_showing_count + 199;
+				jyingo._showing_mask_div.style.zIndex = jyingo._popup_showing_count + 19999;
 			}
 			
 			this._showing = false;
@@ -564,7 +573,7 @@ jyingo.extend('popup', function(self, settings, shared) {
 			 
 			if (this.__active)
 			  return;
-			
+						
 			this.__active = true;
 			this.$.addClass('active');
 			
@@ -600,10 +609,10 @@ jyingo.extend('popup', function(self, settings, shared) {
 			 this.hide();
 			}
 		},
-		
+				
 		show : function(attacher)
 		{ 
-			
+						
 			if (shared.popup_animating == true)
 			{
 				shared.popup_stack.push(this);
@@ -613,8 +622,7 @@ jyingo.extend('popup', function(self, settings, shared) {
 			if (this._showing)
 			 return;
 			 
-			
-			
+						 
 			/*setTimeout(function() {
 				if (jyingo.get_window()) {
 					jyingo.get_window().push_state();
@@ -677,8 +685,8 @@ jyingo.extend('popup', function(self, settings, shared) {
 			this._showing_index = jyingo._popup_showing_count;
 			
 	
-			this._element.style.zIndex = jyingo._popup_showing_count + 200;
-			jyingo._showing_mask_div.style.zIndex = jyingo._popup_showing_count + 199;
+			this._element.style.zIndex = jyingo._popup_showing_count + 20000;
+			jyingo._showing_mask_div.style.zIndex = jyingo._popup_showing_count + 19999;
 			
 			
 			
@@ -704,7 +712,7 @@ jyingo.extend('popup', function(self, settings, shared) {
 		  this.$.css({position:'fixed'});
 		  
 		  if (this._transition == 'slide-fade' && (attacher == undefined || !attacher))
-		  	top = 50;
+		  	top = 100;
 		  
 		  
 			if (h+top > this.canvas_window_height() || cached_fb_page_infos )

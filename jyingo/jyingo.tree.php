@@ -63,10 +63,10 @@
   function add_child($child, $after = NULL)
   {
   	
-  	if ($after != NULL && in_array($after, $this->children))
+  	if ($after !== NULL && in_array($after, $this->children, true))
   	{
 
-  		 array_splice($this->children, array_search($after, $this->children)+1, 0, array($child));
+  		 array_splice($this->children, array_search($after, $this->children, true)+1, 0, array($child));
 
   		 
   	} else {
@@ -80,7 +80,7 @@
   function drop($dispose = false)
   {
   	
-  	if (!$this->parent)
+  	if ($this->parent === NULL)
   	 return;
 
   	if ($dispose)
@@ -100,9 +100,9 @@
   function insert_before($child, $before = NULL)
   {
   	 
-  	if ($before != NULL && in_array($before, $this->children))
+  	if ($before !== NULL && in_array($before, $this->children))
   	{
-  		 array_splice($this->children, array_search($before, $this->children), 0, array($child));
+  		 array_splice($this->children, array_search($before, $this->children, true), 0, array($child));
   	} else {
   	   array_unshift($this->children, $child);
   	} 

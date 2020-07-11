@@ -1072,8 +1072,11 @@ var jyingo = {};
  
  
      if (out['caller'] != undefined && __j_objects[out['caller']])
+     {
 		 	__j_objects[out['caller']]._set_disabled(false); 
-		 	
+		 	__j_objects[out['caller']]._called(); 
+		 }
+		 
      if (out['service'] != undefined)
      {
      	
@@ -1823,6 +1826,12 @@ var jyingo = {};
 			 
 		};
 		
+		obj._called = function()
+		{
+			if (typeof this.called !== 'undefined')
+			 this.called();
+		};
+		
 		obj._set_disabled = function(disabled) {
 			
 			if (this._eat_disable)
@@ -1881,6 +1890,7 @@ var jyingo = {};
 				this._set_disabled(true);
 		    this._eat_disable = 1;
 		  }
+		  
 			jyingo.event(this, event);
 		};
 		
@@ -2098,8 +2108,6 @@ var jyingo = {};
 		obj.delegate = function(evm, what, obj)
 	  {
 	  	
-	  	var delegate = this.create_delegate(what);
-	  	
 	  	var _object = null;
 	  	if (obj != undefined)
 	  	{
@@ -2112,6 +2120,37 @@ var jyingo = {};
          	_object = obj;
 	  		 
 	  	}
+	  	
+	  	var $target = (obj == undefined ? this.$ : $(_object));
+	  		
+	  	if (evm == 'click' && ('ontouchstart' in document.documentElement) && $target.prop("tagName") != 'INPUT' && $target.prop("tagName") != 'SELECT')
+	  	{ 
+	  		var self = this;
+	  		setTimeout(function() {
+	  			
+		  		var useTouchStart = ($target.outerWidth() < 80 || $target.outerHeight() < 80) && $target.outerWidth() > 0 && $target.outerHeight() > 0;
+		  		 
+		  		
+	  	    var delegate = self.create_delegate(what);
+	  	    self._delegates.push(new Array(useTouchStart ? 'touchstart' : 'click', delegate, _object));
+		  		$target.bind(useTouchStart ? 'touchstart' : 'click', delegate);
+		  	
+		  		if (useTouchStart)
+	        $target.click(function (event) {
+				      		 
+				      		 event.stopPropagation();
+				      		 jyingo.cancel_event(event);
+				      		  
+				      	});
+			  }, 0);
+			  
+			  return;		
+	  		
+	  	}
+	  	
+	  	var delegate = this.create_delegate(what);
+	  	
+
 	  	
 	  	this._delegates.push(new Array(evm, delegate, _object));
 	  	
@@ -2327,7 +2366,7 @@ jyingo.extend('css3animator', function(self, _element) {
 	var _grad_type = 'deg';
   var _queue = [];
   var _running = false;
-
+ 
 	
 	function ob()
 	{
@@ -2366,7 +2405,7 @@ jyingo.extend('css3animator', function(self, _element) {
 		 
 		 if (!transforms.length)
 		  return 'translate3d(0,0,0)';
-		 
+		 		 
 		 return transforms.join(' ');
 		 
 	}
@@ -2374,7 +2413,7 @@ jyingo.extend('css3animator', function(self, _element) {
 	
 	
   function transition_end(evt)
-	{
+	{				 
 		 var o = { f : function() {if (this.c != null) this.c(this.t); },
 		    	      t : _element,
 		    	    c : null };
@@ -2407,25 +2446,23 @@ jyingo.extend('css3animator', function(self, _element) {
    	 if (ease == 'swing')
    	  ease = 'ease-in';
    	 
-   	 
-   	 
-	   $el().css({ '-webkit-transition' : '-webkit-transform '+(duration/1000).toFixed(2)+'s '+ease+', opacity '+(duration/1000).toFixed(2)+'s '+ease, 
-	   	   	 	     'transition': 'transform '+(duration/1000).toFixed(2)+'s '+ease+', opacity '+(duration/1000).toFixed(2)+'s '+ease });
-	   	   	 
-
-	    $el().bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd',
-	   	{ cb : cb, o : this },
-	   	jyingo.delegate(this, transition_end)); 
-	   	   	   	  
-	   	   	 
+   	   
+		   $el().css({ '-webkit-transition' : '-webkit-transform '+(duration/1000).toFixed(2)+'s '+ease+', opacity '+(duration/1000).toFixed(2)+'s '+ease, 
+		   	   	 	     'transition': 'transform '+(duration/1000).toFixed(2)+'s '+ease+', opacity '+(duration/1000).toFixed(2)+'s '+ease });
+        
+      var delegate = jyingo.delegate(this, transition_end);
+      var callback = { cb : cb, o : this };
+     
+	   $el().bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', callback, delegate);    	
+	  	      	 
 	   var o = { params : params,
 	   	   	 	   c : this,
 	   	   	 	   r : function() {  this.c.set(this.params) }};
 	   	   	 
-	    if (!(typeof setImmediate == 'undefined'))
-         setImmediate(jyingo.delegate(o, o.r)); 
-	   	else
-	   	   setTimeout(jyingo.delegate(o,o.r), 0);		
+	    //if (!(typeof setImmediate == 'undefined'))
+      //   setImmediate(jyingo.delegate(o, o.r)); 
+	   	//else
+	   	   setTimeout(jyingo.delegate(o,o.r), 1000/60);		
 	}
 	    	   	
 	self.proto({
@@ -2488,7 +2525,7 @@ jyingo.extend('css3animator', function(self, _element) {
 	   	        $el().css({ '-webkit-transform' : get_transform_string(),
 	   	        	      'transform'  :  	get_transform_string(),
 	   	        	      'opacity' : _opacity});
-	   	        	      
+	   	  
 	   		 	    $el().addClass('trick3dbf');
 	   		 }
 	   	
@@ -2594,6 +2631,7 @@ jyingo.frame = function() {
 	
 	this._superelement = null;
 	
+	
 }
 
 jyingo.frame.prototype = {
@@ -2612,10 +2650,38 @@ jyingo.frame.prototype = {
 		} 
 		
 		this.clickable = params.clickable ? params.clickable : false;
+		this.aligned = params.aligned ? params.aligned : false;
+		
+		if (this.aligned)
+		{
+			this.delegate('resize', this.create_delegate(this.resized), window);
+			setTimeout(this.create_delegate(this.resized), 0);
+		}
 		
 		if (this.clickable)
  	   this.delegate('click', this.click);
 	},
+	
+	resized : function()
+	{
+		 if (this.$.children().size() == 0)
+		  return;
+		  
+		 
+		  var first = this.$.children().first();
+		  var width = $(first).outerWidth()+parseInt($(first).css('marginLeft')) + parseInt($(first).css('marginRight'));
+		  if (width == 0) return;
+		  
+		  this.$.removeAttr('style');
+		  var maxWidth = this.$.width();
+		  
+		  var elements = Math.max(1, Math.floor(maxWidth/width));
+		  var newMaxWidth = elements * width;
+		  this.$.css({ 'max-width' : newMaxWidth+'px'});
+		 
+	},
+	
+	
 	
 	click : function()
 	{
@@ -2715,7 +2781,8 @@ jyingo.textbox.prototype = {
        
     if (this.wyg)
     {
-			 CKEDITOR.replace(this.get_element().id);	
+    	 var h = this.$.height();
+			 CKEDITOR.replace(this.get_element().id, { height : h +'px' });	
 			 this.$.addClass('no-display');
     }
     
@@ -3355,25 +3422,38 @@ jyingo.link.prototype = {
 	  this.delegate('click', this.click);
 	  this.href = data.href;
 	  this.delegate('ontouchstart' in document.documentElement ? 'touchstart' : 'mousedown', this.mousedown);
+	  this.delegate('ontouchend' in document.documentElement ? 'touchend' : 'mouseup', this.mouseup);
+	  this.delegate('mouseout', this.mouseup);
 
-	  this.delegate('mouseup', this.mouseup);
+    this.loader = data.loader ? data.loader : false;
 	  this.paging = data.paging ? data.paging : false;
 	  this.touchstart = data.touchstart ? data.touchstart : false;
+	  
+	  var el = $(this.$.find('span')[0]);
+	  
+	  if (el.html() == null || el.html().length == 0)
+	   $(this.$.find('span')[0]).css({ display : 'none' });
+	  
 	},
 	
 	
+	called : function()
+	{
+		 if (this.loader)
+		   jyingo.get_window_manager().remove_loader();
+		  
+	},
 	
 	mousedown : function(event)
 	{
 		this.$.addClass('active');
-		if (this.touchstart)
-		 this._click(event);
+	//	if (this.touchstart)
+//		 this._click(event);
 		
 	},
 	
 	mouseup : function()
-	{
-		
+	{		
 		this.$.removeClass('active');
 	},
 	
@@ -3411,6 +3491,7 @@ jyingo.link.prototype = {
 		
 		else if (this.href == '#'/* || this.paging == true*/)
 		{
+			if (this.loader) jyingo.get_window_manager().set_loader();
 		  this.event('click');
 		 
 		  var ev = jyingo.eventize(event);
@@ -3421,14 +3502,14 @@ jyingo.link.prototype = {
 	 
 	click : function(event)
 	{
-		if (!this.touchstart)
+		//if (!this.touchstart)
 		 this._click(event);
-		else
+	/*	else
 		{
 		  var ev = jyingo.eventize(event);
 		  jyingo.cancel_event(ev);
 		  return false;
-		}
+		}*/
 	},
 	
 	
@@ -3436,7 +3517,14 @@ jyingo.link.prototype = {
 	{
 
 		if (key == 'text')
-		 this.get_element().innerHTML = value;
+		{
+			
+			var element = this.$.find('span')[0];
+			if (value.length == 0) $(element).css({ display : 'none'});
+			else $(element).css({ display : ''});
+							
+		  $(element).html(value);
+		}
 	}
 	
 };
@@ -3686,16 +3774,39 @@ jyingo.label.prototype = {
 	  return document.createElement('span');
 	},
 	
+	set_icon : function(icon)
+	{
+		
+		var icon = $(this.$.find('i'));
+		if (icon.size())
+		{
+			icon.get(0).className = icon; 
+		}
+		
+	},	
+	
 	set_text : function(text)
 	{
-		this.get_element().innerHTML = text;
+		
+		var icon = $(this.$.find('i'));
+		if (icon.size())
+		{
+			
+			this.get_element().innerHTML = icon[0].outerHTML+text;
+		} else {
+			
+			this.get_element().innerHTML = text;
+		}
+		
 	},
 
 	change : function(key, value)
 	{
+		if (key == 'icon')
+		 this.set_icon(value);
 
 		if (key == 'text')
-		 this.get_element().innerHTML = value;
+		 this.set_text(value);
 	}
 	
 };
@@ -4133,7 +4244,10 @@ jyingo.extend('windowmanager', function(self, settings, shared) {
 	   
 	  set_loader : function()
 	  {
-
+      
+      if (_loader != null)
+       return;
+      
 	    _loader = document.createElement('div');
 	    _loader.className = 'window_loader';
 	    _loader.innerHTML = '<div class="loader"></div>';
@@ -4160,6 +4274,8 @@ jyingo.extend('windowmanager', function(self, settings, shared) {
 			}
 			
 			var _h = location.hash.replace('#','');
+			if (_h.indexOf(':') != -1) return;
+			
 			if(_h != _hash_position)
 			{
 				
@@ -4591,7 +4707,7 @@ jyingo.select.prototype = {
    
   
 		this.delegate('resize', this.autoresize, window);
-		this.delegate('change', this.click);
+		this.delegate('change', this.change);
 		
 		this.delegate('mouseup', this.cancel_event);
 		this.delegate('mousedown', this.cancel_event);
@@ -4619,13 +4735,13 @@ jyingo.select.prototype = {
 		return true;
 	}, 
 	 
-	click : function(event)
+	change : function(event)
 	{
 		
 		var ev = jyingo.eventize(event);
 		jyingo.cancel_event(ev);
 		
-		this.event('click');
+		this.event('change');
 		
 		return false;
 	},
